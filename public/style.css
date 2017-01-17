@@ -22,6 +22,11 @@ section h3 {
   padding-bottom: 5px;
 }
 
+section h4 {
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+
 .insert {
   background: #2ecc90;
 }
@@ -50,3 +55,7 @@ button:hover {
   background: #bdc3c7;
 }
 
+.getdata {
+  background: #2ecc90;
+  margin-bottom: 15px;
+}

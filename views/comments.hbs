@@ -1,0 +1,24 @@
+<h1>{{title}}</h1>
+<section class="comments">
+    {{#each items }}
+        <h3>
+            <div>Title: {{this.title}} </div>
+            <div>Genre: {{this.content}} </div>
+            <div>Author: {{this.author}} </div>
+        </h3>
+        <form action="/comments/:{{this._id}}" method="post">
+            <input type="text" id="comment" name="comment">
+            <button id="addcomment" name="addcomment" value={{this._id}}>Add Comment</button>
+        </form>
+        <article>Comment:
+            <div>
+                <ul>
+                    {{#each this.comment }}
+                         <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </article>
+    {{/each}}
+</section>
+

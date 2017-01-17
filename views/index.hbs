@@ -17,3 +17,30 @@
         <button type="submit">INSERT</button>
     </form>
 </section>
+<section class="getdata">
+    <h4>Get Data</h4>
+    <form action="/data" method="get">
+         <button id='getData'>Get Data</button>
+         </br>
+    </form>
+    <div>
+        {{# each items }}
+
+                <article>
+                    <div><br></div>
+                    <div>Title: {{ this.title }}</div>
+                    <div>Author: {{ this.author }}</div>
+                    <div>Genre: {{ this.content }}</div>
+                    <div>ID: {{ this._id }}</div>
+                    <div><br></div>
+                    <form action="/data/:{{this._id}}/delete" method="post">
+                    <button id="delete" name="delete" value={{this._id}}>Delete</button>
+                    </form>
+                    <div><br></div>
+                    <a href="/comments?id={{this._id}}">Comment</a>
+                </article>
+        {{/each}}
+
+        </br>
+    </div>
+</section>
