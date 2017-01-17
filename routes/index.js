@@ -7,17 +7,17 @@ var assert = require('assert');
 var url = 'mongodb://localhost:27017/TESTER';
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(request, response, next) {
   // render the index.hbs template and replace {{title}} with 'MongoDB - Basics'
-  res.render('index', {title: 'MongoDB - Basics'});
+  response.render('index', {title: 'MongoDB - Basics'});
 });
 
 /* CREATE Data */
-router.post('/insert', function(req, res, next) {
+router.post('/insert', function(request, response, next) {
   var item = {
-    title: req.body.title,
-    content: req.body.content,
-    author: req.body.author
+    title: request.body.title,
+    content: request.body.content,
+    author: request.body.author
   };
 
   mongo.connect(url, function(err, db) {
@@ -29,11 +29,11 @@ router.post('/insert', function(req, res, next) {
     });
   });
 
-  res.redirect('/');
+  response.redirect('/');
 });
 
 /* READ Data */
-router.get('/data', function(req, res, next) {
+router.get('/data', function(request, response, next) {
   var resultArray = [];
   mongo.connect(url, function(err, db) {
     assert.equal(null, err);
@@ -43,15 +43,15 @@ router.get('/data', function(req, res, next) {
     },
     function () {
       db.close();
-      res.render('index', {items: resultArray});
+      response.render('index', {items: resultArray});
     });
   });
 });
 
 /* DELETE Data */
-router.post('/data/:delete/delete', function(req, res, next){
+router.post('/data/:delete/delete', function(request, response, next){
   mongo.connect(url, function(err, db){
-    var id = req.body.delete;
+    var id = request.body.delete;
     assert.equal(null, err);
     db.collection('data').deleteOne({"_id": objectId(id)}, function(err, result) {
       assert.equal(null, err);
@@ -59,34 +59,34 @@ router.post('/data/:delete/delete', function(req, res, next){
       db.close();
     });
   });
-  res.redirect('/data');
+  response.redirect('/data');
 });
 
 /* Comments */
-router.get('/comments', function(req, resp, next){
+router.get('/comments', function(request, response, next){
   var newComments = [];
   mongo.connect(url, function(err, db){
     assert.equal(null, err);
-    var results = db.collection('data').find({"_id": objectId(req.query.id)});
+    var results = db.collection('data').find({"_id": objectId(request.query.id)});
     results.forEach(function(ind, err){
       assert.equal(null, err);
       newComments.push(ind);
     }, function(){
       db.close();
-      resp.render('comments', {items: newComments, title: 'MongoDB - Comments'});
+      response.render('comments', {items: newComments, title: 'MongoDB - Comments'});
     });
   });
  });
 
 /* UPDATE Comments*/
-router.post('/comments/:addcomment', function(req, resp, next){
+router.post('/comments/:addcomment', function(request, response, next){
 var result = [];
-result.push(req.body.comment);
+result.push(request.body.comment);
 mongo.connect(url, function(err, db){
   assert.equal(null, err);
-  db.collection('data').updateOne({"_id": objectId(req.body.addcomment)}, {$set: {comment: result}});
+  db.collection('data').updateOne({"_id": objectId(request.body.addcomment)}, {$set: {comment: result}});
   db.close();
-  resp.redirect('/comments?id=' + req.body.addcomment );
+  response.redirect('/comments?id=' + request.body.addcomment );
   });
 });
 
